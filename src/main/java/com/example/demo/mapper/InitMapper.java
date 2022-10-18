@@ -1,6 +1,7 @@
 package com.example.demo.mapper;
 
 
+import com.example.demo.entity.AMDBEntity;
 import com.example.demo.entity.InitEntity;
 import org.apache.ibatis.annotations.*;
 
@@ -37,5 +38,25 @@ public interface InitMapper {
     public int updateLogWithVersion(@Param("ef") Integer ef, @Param("version") Integer version);
 
 
+    @Select("select * from FT.AMDBELND " +
+            "where aaa = #{aaa} and bbb = #{bbb}" )
+    @Results(id= "dbelnd", value = {
+            @Result(column = "appCode", property = "appCode"),
+            @Result(column = "aaa", property = "aaa"),
+            @Result(column = "bbb", property = "bbb"),
+            @Result(column = "status", property = "status")
+    })
+    List<AMDBEntity> selectAMEntity(@Param("aaa") Integer aaa, @Param("bbb") Integer bbb);
+
+    @Update("update FT.AMDBELND set status = #{trg}" +
+            " where aaa = #{aaa} and bbb = #{bbb} and status = #{org}")
+    public int updateAMDBWithOptLock(@Param("aaa") Integer aaa
+            ,@Param("bbb") Integer bbb, @Param("org") String org, @Param("trg") String trg);
+
+
+    @Update("update FT.AMDBELND set status = #{status}" +
+            " where aaa = #{aaa} and bbb = #{bbb} ")
+    public int updateAMDBLog(@Param("aaa") Integer aaa, @Param("bbb") Integer bbb,
+                             @Param("status") String status);
 
 }

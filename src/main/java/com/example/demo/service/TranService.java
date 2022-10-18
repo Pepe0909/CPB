@@ -15,4 +15,6 @@ public interface TranService {
     public void updateWithVersion();
 
     public int updateJouranl(List<String> journalList);
+
+    public void updateAMDBWithOptLock();
 }

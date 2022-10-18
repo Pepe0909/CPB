@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.entity.AMDBEntity;
 import com.example.demo.mapper.InitMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,6 +41,22 @@ public class IniDao {
 
     }
 
+    public List<AMDBEntity> selectAMDB (Integer aaa, Integer  bbb) {
+        return initMapper.selectAMEntity(aaa, bbb);
+    }
 
+    public boolean updateAMDBWithOptLock (Integer aaa, Integer bbb, String ori , String trg) {
+
+        if (initMapper.updateAMDBWithOptLock(aaa, bbb, ori, trg) > 0) {
+            return true;
+        }
+        return false;
+
+    }
+
+
+    public int updateAMDBLog (Integer aaa, Integer bbb, String status) {
+        return initMapper.updateAMDBLog(aaa, bbb, status);
+    }
 
 }

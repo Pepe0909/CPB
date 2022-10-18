@@ -162,6 +162,19 @@ public class initController {
 
     }
 
+    @RequestMapping("/query")
+    public String query() {
+
+        queryService.query();
+
+
+
+
+
+        return "aaa";
+
+    }
+
 
 
     @RequestMapping("/forth")
@@ -197,18 +210,18 @@ public class initController {
 //
 //            }).start();
 
-        for (int i = 0; i <50; i++) {
-            new Thread(() -> {
-
-                try {
-                    tranService.updateWithOptLock();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }).start();
-
-        }
+//        for (int i = 0; i <50; i++) {
+//            new Thread(() -> {
+//
+//                try {
+//                    tranService.updateWithOptLock();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }).start();
+//
+//        }
 
 //        List<String> journalList = new ArrayList<>();
 //        try {
@@ -220,7 +233,18 @@ public class initController {
 //        System.out.println(journalList);
 
 
+        for (int i = 0; i <1; i++) {
+            new Thread(() -> {
 
+                try {
+                    tranService.updateAMDBWithOptLock();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }).start();
+
+        }
 
 
         return 1;

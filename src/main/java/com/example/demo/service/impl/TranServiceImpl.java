@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.IniDao;
+import com.example.demo.entity.AMDBEntity;
 import com.example.demo.entity.InitEntity;
 import com.example.demo.service.TranService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,5 +199,49 @@ public class TranServiceImpl implements TranService {
         return 1;
 
     }
+
+
+    @Override
+    @Transactional
+    public void updateAMDBWithOptLock() {
+
+        try {
+            List<AMDBEntity> list = iniDao.selectAMDB(111, 222);
+            String status = list.get(0).getStatus();
+            if ("Approved".equals(status)) {
+                System.out.println("B:already approved");
+                return;
+            }
+            if ("Doing".equals(status)) {
+                System.out.println("B:other user is doing approval");
+                return;
+            }
+
+            boolean lockFlag = iniDao.updateAMDBWithOptLock(111,222
+                    , status, "Doing");
+
+            if (lockFlag) {
+
+                Thread.sleep(120000);
+                iniDao.selectAMDB(111, 222);
+
+                iniDao.updateAMDBLog(111, 222, "Approved");
+                System.out.println("successfully approved");
+
+            } else {
+                System.out.println("other user is doing approval");
+                return;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+//            System.out.println("E: Exceptions happened, trax roll back");
+        } finally {
+//            lock.unlock();
+        }
+    }
+
 
 }
